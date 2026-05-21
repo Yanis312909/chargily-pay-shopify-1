@@ -1,0 +1,12 @@
+node_modules/
+.claude/
+*.pdf
+.env
+*.env
+build/
+.cache/
+dev.db
+dev.db-journal
+prisma/migrations/dev/
+.DS_Store
+Thumbs.db

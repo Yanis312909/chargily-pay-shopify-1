@@ -1,0 +1,48 @@
+name = "Chargily Pay"
+client_id = "YOUR_SHOPIFY_CLIENT_ID"
+handle = "chargily-pay"
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "YOUR_DEV_STORE.myshopify.com"
+
+[access_scopes]
+# read_payment_mandate is required for the payments app extension
+scopes = "read_payment_mandate,write_payment_sessions"
+
+[auth]
+redirect_urls = [
+  "https://YOUR_APP_URL/auth/callback",
+  "https://YOUR_APP_URL/auth/shopify/callback",
+  "https://YOUR_APP_URL/api/auth/callback",
+]
+
+[webhooks]
+api_version = "2025-01"
+
+  [[webhooks.subscriptions]]
+  topics = ["app/uninstalled"]
+  uri = "/webhooks/app-uninstalled"
+
+[pos]
+embedded = false
+
+[[extensions]]
+type = "payments_extension"
+name = "Chargily Payment"
+handle = "chargily-payment"
+
+  [extensions.targeting]
+  # Offsite payment — customer is redirected to Chargily's hosted checkout page
+  target = "payments.offsite.render"
+
+  [extensions.payments.offsite]
+  # Shopify calls these URLs on our app server
+  payment_session_url    = "/app/payment"
+  refund_session_url     = "/app/refund"
+  cancel_session_url     = "/app/payment/cancel"
+
+  merchant_label         = "Chargily Pay (Edahabia / CIB)"
+  supported_currencies   = ["DZD"]
+  supported_countries    = ["DZ"]
+  test_mode_available    = true

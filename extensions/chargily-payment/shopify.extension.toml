@@ -1,0 +1,35 @@
+api_version = "2025-01"
+
+[[extensions]]
+type = "payments_extension"
+name = "Chargily Pay"
+handle = "chargily-payment"
+
+  [extensions.targeting]
+  target = "payments.offsite.render"
+
+  [extensions.payments.offsite]
+  # URLs on our Remix app server that Shopify calls for each payment event
+  payment_session_url  = "/app/payment"
+  refund_session_url   = "/app/refund"
+  cancel_session_url   = "/app/payment/cancel"
+
+  # Label shown to customers at checkout
+  merchant_label = "Chargily Pay — Edahabia / CIB"
+
+  # Only DZD is supported by Chargily Pay
+  supported_currencies = ["DZD"]
+
+  # Algeria only
+  supported_countries = ["DZ"]
+
+  # Enables test mode toggle in Shopify payment settings
+  test_mode_available = true
+
+  # Buyer instructions shown at checkout (optional, max 200 chars)
+  buyer_label = "Payez avec votre carte Edahabia (CCP) ou CIB (carte bancaire algérienne)"
+  buyer_label_to_locale = [
+    { locale = "fr", label = "Payez avec votre carte Edahabia (CCP) ou CIB" },
+    { locale = "ar", label = "ادفع بواسطة بطاقة الدفع الإلكتروني (إدهبية أو CIB)" },
+    { locale = "en", label = "Pay with your Edahabia (CCP) or CIB card" },
+  ]

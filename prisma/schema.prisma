@@ -1,0 +1,41 @@
+// Prisma schema for Chargily Pay Shopify App
+// Uses SQLite for simplicity — swap to PostgreSQL for production deployments
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Required by @shopify/shopify-app-remix for OAuth session management
+model Session {
+  id            String    @id
+  shop          String
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  expires       DateTime?
+  accessToken   String
+  userId        BigInt?
+  firstName     String?
+  lastName      String?
+  email         String?
+  accountOwner  Boolean   @default(false)
+  locale        String?
+  collaborator  Boolean?  @default(false)
+  emailVerified Boolean?  @default(false)
+}
+
+// Stores Chargily API credentials per merchant shop
+model MerchantConfig {
+  id                 Int      @id @default(autoincrement())
+  shop               String   @unique  // e.g. "my-store.myshopify.com"
+  chargilyApiKey     String            // Chargily secret key — also used to verify webhook signatures
+  isTestMode         Boolean  @default(true)
+  offlineAccessToken String            // Shopify offline token — used to call GraphQL from webhook handler
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
